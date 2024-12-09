@@ -53,10 +53,11 @@ export const Receiver = () => {
 
     const getCameraStreamAndSend = (pc) => {
         navigator.mediaDevices.getUserMedia({ video: true ,audio : true }).then((stream) => {
-            stream.getTracks().forEach((track) => {
-                pc?.addTrack(track);
-            });
-            selfVideo.current.srcObject = stream;
+            const tracks = stream.getVideoTracks()[0];
+            const audiotrack = stream.getAudioTracks()[0];
+            pc?.addTrack(tracks)
+            pc?.addTrack(audiotrack)
+            selfVideo.current.srcObject = new MediaStream([tracks]);
         });
     }
 
