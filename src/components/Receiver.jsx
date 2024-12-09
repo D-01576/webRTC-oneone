@@ -52,7 +52,7 @@ export const Receiver = () => {
     }
 
     const getCameraStreamAndSend = (pc) => {
-        navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+        navigator.mediaDevices.getUserMedia({ video: true ,audio : true }).then((stream) => {
             stream.getTracks().forEach((track) => {
                 pc?.addTrack(track);
             });
