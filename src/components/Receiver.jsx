@@ -19,9 +19,10 @@ export const Receiver = () => {
     function startReceiving(socket) {
         const pc = new RTCPeerConnection();
         pc.ontrack = (event) => {
-            console.log(event)
-            userVideo.current.srcObject = new MediaStream([event.track]);
-        }
+            // console.log(event);
+            // const mediaStream = new MediaStream([event.track]);
+            // userVideo.current.srcObject = mediaStream;
+        };        
 
         pc.onicecandidate = (event) => {
             if (event.candidate) {
@@ -44,6 +45,19 @@ export const Receiver = () => {
                         }));
                     });
                 });
+                setTimeout(() => {
+                    const newmedia = new MediaStream();
+                    console.log("triggered")
+                    const track1 = pc.getTransceivers()[0].receiver.track
+                    console.log(track1)
+                    newmedia.addTrack(track1);
+                    const track2 = pc.getTransceivers()[1].receiver.track
+                    console.log(track2)
+                    newmedia.addTrack(track2);
+                    // userVideo.current.srcObject.addTrack(track1)
+                    userVideo.current.srcObject = newmedia;
+                    userVideo.current.play()
+                }, 5000);
             } else if (message.type === 'iceCandidate') {
                 pc.addIceCandidate(message.candidate);
             }

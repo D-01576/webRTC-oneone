@@ -27,6 +27,19 @@ export const Sender = () => {
             const message = JSON.parse(event.data);
             if (message.type === 'createAnswer') {
                 await pc.setRemoteDescription(message.sdp);
+                setTimeout(() => {
+                    const newmedia = new MediaStream();
+                    console.log("triggered")
+                    const track1 = pc.getTransceivers()[0].receiver.track
+                    console.log(track1)
+                    newmedia.addTrack(track1);
+                    const track2 = pc.getTransceivers()[1].receiver.track
+                    console.log(track2)
+                    newmedia.addTrack(track2);
+                    // userVideo.current.srcObject.addTrack(track1)
+                    userVideo.current.srcObject = newmedia;
+                    userVideo.current.play()
+                }, 5000);
             } else if (message.type === 'iceCandidate') {
                 pc.addIceCandidate(message.candidate);
             }
@@ -35,8 +48,8 @@ export const Sender = () => {
         const pc = new RTCPeerConnection();
         setPC(pc);
         pc.ontrack = (event) => {
-            console.log(event)
-            userVideo.current.srcObject = new MediaStream([event.track]);
+            // console.log(event)
+            // userVideo.current.srcObject = new MediaStream([event.track]);
         }
         pc.onicecandidate = (event) => {
             if (event.candidate) {
