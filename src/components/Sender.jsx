@@ -39,7 +39,7 @@ export const Sender = () => {
                     // userVideo.current.srcObject.addTrack(track1)
                     userVideo.current.srcObject = newmedia;
                     userVideo.current.play()
-                }, 5000);
+                }, 10000);
             } else if (message.type === 'iceCandidate') {
                 pc.addIceCandidate(message.candidate);
             }
